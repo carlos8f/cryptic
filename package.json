@@ -1,0 +1,35 @@
+{
+  "name": "cryptic",
+  "version": "0.0.0",
+  "description": "easy two-way encryption",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "idgen": "~1.3.0"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/carlos8f/cryptic.git"
+  },
+  "homepage": "https://github.com/carlos8f/cryptic",
+  "keywords": [
+    "crypto",
+    "passphrase",
+    "password",
+    "bacon",
+    "hacking",
+    "cyber",
+    "attack"
+  ],
+  "author": "Carlos Rodriguez <carlos@s8f.org> (http://s8f.org/)",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "d40c2894c5f7b8ddfc295c442a07da228cb9f14a",
+  "bugs": {
+    "url": "https://github.com/carlos8f/cryptic/issues"
+  }
+}
