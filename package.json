@@ -6,7 +6,8 @@
   "dependencies": {},
   "devDependencies": {
     "mocha": "*",
-    "idgen": "~1.3.0"
+    "idgen": "~1.3.0",
+    "cli-prompt": "~0.2.2"
   },
   "scripts": {
     "test": "make test"

@@ -5,6 +5,58 @@ easy two-way encryption
 
 [![build status](https://secure.travis-ci.org/carlos8f/cryptic.png)](http://travis-ci.org/carlos8f/cryptic)
 
+## construct
+
+```js
+var cryptic = require('cryptic');
+var c = cryptic('<passphrase>', '<plaintext|crypted>', '[encoding]');
+```
+
+## Methods
+
+### encrypt()
+
+```js
+var cryptic = require('cryptic')
+  , prompt = require('cli-prompt')
+
+prompt('plain text: ', function (plaintext) {
+  prompt.password('passphrase: ', function (passphrase) {
+    console.log(cryptic(passphrase, plaintext).encrypt().toString('base64'));
+  });
+});
+```
+
+### decrypt()
+
+`decrypt()` throws if the decryption fails, and returns `this` (chainable).
+
+```js
+var cryptic = require('cryptic')
+  , prompt = require('cli-prompt')
+
+prompt('base64-encoded crypted text: ', function (crypted) {
+  prompt.password('passphrase: ', function (passphrase) {
+    console.log(cryptic(passphrase, crypted, 'base64').decrypt().toString());
+  });
+});
+```
+
+### unlock()
+
+`unlock()` returns the plain text, or `false` if the decryption failed.
+
+```js
+var cryptic = require('cryptic')
+  , prompt = require('cli-prompt')
+
+prompt('base64-encoded crypted text: ', function (crypted) {
+  prompt.password('passphrase: ', function (passphrase) {
+    console.log(cryptic(passphrase, crypted, 'base64').decrypt().toString());
+  });
+});
+```
+
 - - -
 
 ### Developed by [Terra Eclipse](http://www.terraeclipse.com)
