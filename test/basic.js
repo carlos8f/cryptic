@@ -9,18 +9,28 @@ describe('basic test', function () {
   });
   it('bad passphrase', function () {
     assert.throws(function () {
-      cryptic('wombat', 'ulak1KSyjv+pBKiOlWb3RCtImHUgKJV5rXJQbJBWw88=').decrypt();
+      cryptic('wombat', 'ulak1KSyjv+pBKiOlWb3RCtImHUgKJV5rXJQbJBWw88=', 'base64').decrypt();
     }, /bad passphrase/);
+  });
+  it('bad unlock', function () {
+    var res = cryptic('wombat', 'ulak1KSyjv+pBKiOlWb3RCtImHUgKJV5rXJQbJBWw88=', 'base64').unlock();
+    assert.strictEqual(res, false);
+  });
+  it('good unlock', function () {
+    var res = cryptic('wombaT', 'ulak1KSyjv+pBKiOlWb3RCtImHUgKJV5rXJQbJBWw88=', 'base64').unlock();
+    assert.equal(res, 'my name is carlos');
   });
   it('file i/o', function (done) {
     var p = '/tmp/cryptic-test-' + idgen();
     cryptic('wishy Washy', 'to\n\n\nday').encrypt().toFile(p, function (err) {
       assert.ifError(err);
       cryptic.fromFile('wishy Washy', p, function (err, c) {
-        assert.ifError(err);
-        assert.equal(c.toString('base64'), 'O6SvJWb7OB/aT0FQiRjNEA==');
-        assert.equal(c.decrypt().toString(), 'to\n\n\nday');
-        done();
+        fs.unlink(p, function () {
+          assert.ifError(err);
+          assert.equal(c.toString('base64'), 'O6SvJWb7OB/aT0FQiRjNEA==');
+          assert.equal(c.decrypt().toString(), 'to\n\n\nday');
+          done();
+        });
       });
     });
   });

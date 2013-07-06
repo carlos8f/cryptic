@@ -39,8 +39,19 @@ Cryptic.prototype.decrypt = function () {
   }
   return this;
 };
+Cryptic.prototype.unlock = function (encoding) {
+  try {
+    var decipher = crypto.createDecipher('aes-256-cbc', this.passphrase);
+    var decrypted = decipher.update(this.buf);
+    var unlocked = Buffer.concat([decrypted, decipher.final()]).toString(encoding);
+  }
+  catch (e) {
+    return false;
+  }
+  return unlocked;
+};
 Cryptic.prototype.toString = function (encoding) {
-  return Buffer(this.buf).toString(encoding);
+  return this.buf.toString(encoding);
 };
 Cryptic.prototype.toFile = function (p, cb) {
   fs.writeFile(p, this.buf, cb);
