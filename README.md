@@ -5,7 +5,7 @@ easy two-way encryption
 
 [![build status](https://secure.travis-ci.org/carlos8f/cryptic.png)](http://travis-ci.org/carlos8f/cryptic)
 
-## cryptic(passphrase, plaintext|crypted, [encoding])
+### cryptic(passphrase, plaintext | crypted, [encoding])
 
 Creates an instance of `cryptic` using a plaintext or crypted buffer or string.
 
