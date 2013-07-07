@@ -20,18 +20,18 @@ module.exports.fromFile = function (passphrase, p, cb) {
 
 Cryptic.prototype.encrypt = function () {
   var cipher = crypto.createCipher('aes-256-cbc', this.passphrase);
-  var encrypted = cipher.update(this.buf);
-  this.buf = Buffer.concat([encrypted, cipher.final()]);
+  var encrypted = Buffer(cipher.update(this.buf), 'binary');
+  this.buf = Buffer.concat([encrypted, Buffer(cipher.final(), 'binary')]);
   return this;
 };
 Cryptic.prototype.decrypt = function () {
   try {
     var decipher = crypto.createDecipher('aes-256-cbc', this.passphrase);
-    var decrypted = decipher.update(this.buf);
-    this.buf = Buffer.concat([decrypted, decipher.final()]);
+    var decrypted = Buffer(decipher.update(this.buf), 'utf8');
+    this.buf = Buffer.concat([decrypted, Buffer(decipher.final(), 'utf8')]);
   }
   catch (e) {
-    if (e.message.match(/bad decrypt|wrong final block length/)) {
+    if (e.message.match(/bad decrypt|wrong final block length|DecipherFinal fail/)) {
       e = new Error('bad passphrase');
       e.code = 'BAD_PASSPHRASE';
     }
@@ -40,20 +40,16 @@ Cryptic.prototype.decrypt = function () {
   return this;
 };
 Cryptic.prototype.lock = function (encoding) {
-  var cipher = crypto.createCipher('aes-256-cbc', this.passphrase);
-  var encrypted = cipher.update(this.buf);
-  return Buffer.concat([encrypted, cipher.final()]).toString(encoding);
+  return this.encrypt().toString(encoding);
 };
 Cryptic.prototype.unlock = function (encoding) {
   try {
-    var decipher = crypto.createDecipher('aes-256-cbc', this.passphrase);
-    var decrypted = decipher.update(this.buf);
-    var unlocked = Buffer.concat([decrypted, decipher.final()]).toString(encoding);
+    var decrypted = this.decrypt().toString(encoding);
   }
   catch (e) {
     return false;
   }
-  return unlocked;
+  return decrypted;
 };
 Cryptic.prototype.toString = function (encoding) {
   return this.buf.toString(encoding);
