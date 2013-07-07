@@ -1,6 +1,6 @@
 {
   "name": "cryptic",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "easy two-way encryption",
   "main": "index.js",
   "dependencies": {},
