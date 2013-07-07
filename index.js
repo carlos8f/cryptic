@@ -39,6 +39,11 @@ Cryptic.prototype.decrypt = function () {
   }
   return this;
 };
+Cryptic.prototype.lock = function (encoding) {
+  var cipher = crypto.createCipher('aes-256-cbc', this.passphrase);
+  var encrypted = cipher.update(this.buf);
+  return Buffer.concat([encrypted, cipher.final()]).toString(encoding);
+};
 Cryptic.prototype.unlock = function (encoding) {
   try {
     var decipher = crypto.createDecipher('aes-256-cbc', this.passphrase);

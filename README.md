@@ -5,31 +5,28 @@ easy two-way encryption
 
 [![build status](https://secure.travis-ci.org/carlos8f/cryptic.png)](http://travis-ci.org/carlos8f/cryptic)
 
-## construct
+## cryptic(passphrase, plaintext|crypted, [encoding])
+
+Creates an instance of `cryptic` using a plaintext or crypted buffer or string.
+
+### Example
 
 ```js
 var cryptic = require('cryptic');
-var c = cryptic('<passphrase>', '<plaintext|crypted>', '[encoding]');
+var c = cryptic('my secret', 'some plaintext');
 ```
 
 ## Methods
 
 ### encrypt()
 
-```js
-var cryptic = require('cryptic')
-  , prompt = require('cli-prompt')
-
-prompt('plain text: ', function (plaintext) {
-  prompt.password('passphrase: ', function (passphrase) {
-    console.log(cryptic(passphrase, plaintext).encrypt().toString('base64'));
-  });
-});
-```
+Encrypts the buffer and returns `this` (chainable).
 
 ### decrypt()
 
-`decrypt()` throws if the decryption fails, and returns `this` (chainable).
+Decrypts the buffer and throws if the decryption fails, and returns `this` (chainable).
+
+#### Example
 
 ```js
 var cryptic = require('cryptic')
@@ -42,9 +39,18 @@ prompt('base64-encoded crypted text: ', function (crypted) {
 });
 ```
 
-### unlock()
+### toString([encoding])
 
-`unlock()` returns the plain text, or `false` if the decryption failed.
+Returns the buffer as a string, optionally converted using an encoding.
+
+### lock([encoding])
+
+Encrypts the buffer and returns as a string, optionally converted using an encoding.
+
+### unlock([encoding])
+
+Decrypts the buffer and returns as a string, optionally converted using an encoding,
+or `false` if the decryption failed.
 
 ```js
 var cryptic = require('cryptic')
@@ -52,10 +58,19 @@ var cryptic = require('cryptic')
 
 prompt('base64-encoded crypted text: ', function (crypted) {
   prompt.password('passphrase: ', function (passphrase) {
-    console.log(cryptic(passphrase, crypted, 'base64').decrypt().toString());
+    console.log(cryptic(passphrase, crypted, 'base64').unlock());
   });
 });
 ```
+
+### toFile(p, cb)
+
+Writes the buffer to a file at path `p` and calls `cb` when done.
+
+### cryptic.fromFile(passphrase, p, cb)
+
+Reads a file at path `p` and calls `cb(err, c)` with a new instance of `cryptic`
+based on the passphrase and contents of the file.
 
 - - -
 
